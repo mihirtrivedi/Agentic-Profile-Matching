@@ -52,6 +52,33 @@ graph TD;
 - **XSS Prevention:** All user inputs are strictly sanitized and HTML-escaped before rendering in the Streamlit UI.
 - **State Isolation:** Each user/tab is assigned a unique UUID to prevent cross-session data contamination.
 
+## ⚙️ Setup & Installation (For Reviewers/QA)
+To run this project locally, follow these steps:
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/mihirtrivedi/Agentic-Profile-Matching.git
+   cd Agentic-Profile-Matching
+   ```
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. **Configure Environment Variables:**
+   Create a `.env` file in the root directory and add your Groq API key:
+   ```env
+   GROQ_API_KEY=your_api_key_here
+   ```
+4. **Initialize the Vector Database:**
+   Because the local `chroma_db` is safely ignored from version control, you must run the ingestion script first to populate the database with the sample resumes:
+   ```bash
+   python ingest_resumes.py
+   ```
+5. **Run the Streamlit App:**
+   ```bash
+   streamlit run app.py
+   ```
+
 ## 🛠️ Tech Stack
 - **UI:** Streamlit
 - **Agent Framework:** LangChain & LangGraph
