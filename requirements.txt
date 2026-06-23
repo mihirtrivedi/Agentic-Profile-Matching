@@ -8,3 +8,4 @@ python-dotenv
 
 python-docx
 pysqlite3-binary
+protobuf<4.0.0
