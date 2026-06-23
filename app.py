@@ -91,8 +91,18 @@ st.markdown('<h1 class="main-header">AI Resume Matcher Pro</h1>', unsafe_allow_h
 
 # Initialize chat history and thread id for memory in session state
 if "thread_id" not in st.session_state:
-    if "session_id" in cookies:
+    # 1. Check if user arrived via a Share Link
+    if "share" in st.query_params:
+        shared_id = st.query_params["share"]
+        st.session_state.thread_id = shared_id
+        cookies["session_id"] = shared_id
+        cookies.save()
+        # Instantly hide the session ID from the URL for security!
+        st.query_params.clear()
+    # 2. Check if they have an active secure cookie
+    elif "session_id" in cookies:
         st.session_state.thread_id = cookies["session_id"]
+    # 3. Start a brand new session
     else:
         st.session_state.thread_id = str(uuid.uuid4())
         cookies["session_id"] = st.session_state.thread_id
@@ -171,7 +181,8 @@ with st.sidebar:
                 st.rerun()
                 
             if col2.button("📤 Share", use_container_width=True):
-                st.toast("Link copied to clipboard! (Simulation)")
+                share_url = f"https://agentic-profile-matchinggit.streamlit.app/?share={st.session_state.thread_id}"
+                st.info(f"**Copy this secure link to share your session:**\n\n`{share_url}`\n\n*(The link will automatically hide itself once opened!)*")
                 
     with st.expander("System Instructions", expanded=True):
         st.markdown("1. Input Job Description constraints.\n2. Await vector screening analysis.\n3. Input iterative queries to refine search.")
