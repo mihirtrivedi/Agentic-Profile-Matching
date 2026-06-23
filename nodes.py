@@ -5,29 +5,20 @@ from state import AgentState
 
 def input_receiver_node(state: AgentState):
     """
-    Captures user input and updates the raw JD if the input looks like a full job description.
+    Captures user input. (State memory is now handled dynamically by the intent router)
     """
-    messages = state.get("messages", [])
-    if not messages:
-        return {}
-    
-    latest_msg = messages[-1].content
-    
-    # If it's a long message and no JD exists, treat it as the initial JD
-    # We don't overwrite jd_raw blindly so we don't lose the original context
-    if len(latest_msg) > 100 and not state.get("jd_raw"):
-        return {"jd_raw": latest_msg}
-    
     return {}
 
 def parse_requirements_node(state: AgentState):
     """
-    Calls the extraction tool on the raw JD and updates the state.
+    Calls the extraction tool directly on the user's latest message and updates the state.
     """
-    jd_raw = state.get("jd_raw", "")
-    # Use the tool from Phase 2
-    reqs = extract_requirements(jd_raw)
-    return {"extracted_requirements": reqs}
+    messages = state.get("messages", [])
+    latest_msg = messages[-1].content if messages else ""
+    
+    # Extract requirements from whatever the user just typed
+    reqs = extract_requirements(latest_msg)
+    return {"extracted_requirements": reqs, "jd_raw": latest_msg}
 
 def update_requirements_node(state: AgentState):
     """
