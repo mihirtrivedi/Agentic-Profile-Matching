@@ -63,10 +63,19 @@ def rag_search(requirements: Dict, k: int = 10) -> List[Dict]:
 
 def extract_json_block(text: str) -> str:
     """Extracts the outermost JSON block from LLM output, handling markdown and extra text."""
-    match = re.search(r'\{.*\}', text, re.DOTALL)
+    # First, try to extract from a markdown code block
+    match = re.search(r'```(?:json)?\s*(.*?)\s*```', text, re.DOTALL)
     if match:
-        return match.group(0)
-    return text
+        content = match.group(1)
+    else:
+        content = text
+        
+    # Then, isolate the JSON object by finding the first { and last }
+    start = content.find('{')
+    end = content.rfind('}')
+    if start != -1 and end != -1 and end > start:
+        return content[start:end+1]
+    return content
 
 def get_llm():
     """Returns the Groq LLM instance."""
@@ -82,7 +91,7 @@ def extract_requirements(jd: str) -> Dict:
         ("system", "You are an expert technical recruiter. Analyze the job description and extract the 'must_haves' and 'nice_to_haves'. "
                    "If the user specifies a number of candidates to return, include 'num_candidates' as an integer. "
                    "Output ONLY a valid JSON object with the keys 'must_haves', 'nice_to_haves', and optionally 'num_candidates'. "
-                   "Do not include markdown blocks or any other text."),
+                   "Do NOT wrap the response in markdown blocks. Do NOT include conversational text. Return ONLY the raw JSON dictionary."),
         ("human", "{jd}")
     ])
     
