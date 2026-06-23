@@ -72,7 +72,8 @@ def extract_requirements(jd: str) -> Dict:
     
     prompt = ChatPromptTemplate.from_messages([
         ("system", "You are an expert technical recruiter. Analyze the job description and extract the 'must_haves' and 'nice_to_haves'. "
-                   "Output ONLY a valid JSON object with the keys 'must_haves' (list of strings) and 'nice_to_haves' (list of strings). "
+                   "If the user specifies a number of candidates to return, include 'num_candidates' as an integer. "
+                   "Output ONLY a valid JSON object with the keys 'must_haves', 'nice_to_haves', and optionally 'num_candidates'. "
                    "Do not include markdown blocks or any other text."),
         ("human", "{jd}")
     ])

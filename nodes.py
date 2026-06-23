@@ -39,7 +39,8 @@ def update_requirements_node(state: AgentState):
     
     prompt = (
         f"Update the following job requirements based on the user's latest instruction. "
-        f"Output ONLY a valid JSON object with 'must_haves' and 'nice_to_haves' lists.\n\n"
+        f"If the user asks for a specific number of candidates, include a 'num_candidates' integer key. "
+        f"Output ONLY a valid JSON object with 'must_haves', 'nice_to_haves' lists, and optionally 'num_candidates'.\n\n"
         f"Current Requirements: {json.dumps(current_reqs)}\n"
         f"User Instruction: {latest_msg}"
     )
@@ -63,7 +64,9 @@ def search_resumes_node(state: AgentState):
     Calls the RAG search tool with the current requirements.
     """
     reqs = state.get("extracted_requirements", {})
-    candidates = rag_search(reqs, k=20) # Grab up to 20 candidates for a full evaluation
+    # Grab the requested number of candidates, default to 10
+    k_val = reqs.get("num_candidates", 10)
+    candidates = rag_search(reqs, k=k_val)
     return {"retrieved_candidates": candidates}
 
 def multi_round_screening_node(state: AgentState):
