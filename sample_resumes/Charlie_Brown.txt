@@ -1,0 +1,5 @@
+Charlie Brown
+Full Stack Engineer
+Experience: 2 years
+Skills: React, Python, Flask, AWS.
+Details: Developed user interfaces in React. Created backend services in Flask. Managed deployments on AWS EC2.

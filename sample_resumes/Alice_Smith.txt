@@ -1,0 +1,5 @@
+Alice Smith
+Software Engineer
+Experience: 5 years
+Skills: React, Node.js, AWS, TypeScript.
+Details: Led frontend team to build scalable React applications. Deployed microservices on AWS using Node.js.

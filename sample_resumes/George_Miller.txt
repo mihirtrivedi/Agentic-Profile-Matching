@@ -1,0 +1,5 @@
+George Miller
+Software Engineer
+Experience: 7 years
+Skills: Java, Spring Boot, Microservices, AWS.
+Details: Migrated monolithic applications to microservices using Spring Boot. Deployed on AWS ECS.

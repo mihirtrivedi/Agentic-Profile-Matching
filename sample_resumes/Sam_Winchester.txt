@@ -1,0 +1,5 @@
+Sam Winchester
+Site Reliability Engineer
+Experience: 5 years
+Skills: Linux, Bash, Prometheus, Grafana, Docker.
+Details: Set up monitoring and alerting using Prometheus and Grafana. Managed incident response and improved system uptime.

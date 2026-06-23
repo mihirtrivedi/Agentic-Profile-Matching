@@ -1,0 +1,5 @@
+Kevin Hart
+Data Analyst
+Experience: 3 years
+Skills: SQL, Tableau, Excel, Python.
+Details: Built complex dashboards in Tableau to track KPIs. Performed ad-hoc data analysis using SQL and Python.

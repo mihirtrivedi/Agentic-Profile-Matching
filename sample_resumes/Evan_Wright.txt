@@ -1,0 +1,5 @@
+Evan Wright
+Frontend Developer
+Experience: 4 years
+Skills: Vue.js, JavaScript, HTML, CSS.
+Details: Designed responsive web pages. Worked closely with design teams to implement pixel-perfect UIs.

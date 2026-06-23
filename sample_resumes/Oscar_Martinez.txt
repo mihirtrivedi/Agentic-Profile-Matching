@@ -1,0 +1,5 @@
+Oscar Martinez
+QA Automation Engineer
+Experience: 5 years
+Skills: Selenium, Cypress, Python, Test Automation.
+Details: Built end-to-end testing frameworks from scratch using Cypress. Reduced manual testing time by 70%.

@@ -1,0 +1,5 @@
+Ian Malcolm
+Full Stack Developer
+Experience: 5 years
+Skills: React, Node.js, MongoDB, Express.
+Details: Built MERN stack applications from scratch. Implemented real-time features using WebSockets.

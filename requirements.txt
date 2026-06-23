@@ -1,0 +1,9 @@
+langgraph
+langchain-groq
+langchain-huggingface
+sentence-transformers
+langchain-chroma
+streamlit
+python-dotenv
+
+python-docx

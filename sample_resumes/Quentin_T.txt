@@ -1,0 +1,5 @@
+Quentin T.
+C++ Developer
+Experience: 7 years
+Skills: C++, Qt, Embedded Systems, Linux.
+Details: Developed high-performance embedded systems in C++. Optimized memory management for IoT devices.
