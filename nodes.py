@@ -91,9 +91,10 @@ def multi_round_screening_node(state: AgentState):
         f"Based on the following comparative matrix, output a JSON object mapping each Candidate Name "
         f"to either 'Hire' or 'No-Hire'. "
         f"CRITICAL EVALUATION CRITERIA: "
-        f"1. Experience, overall JD alignment, and general skills are the MOST relevant parameters. Focus heavily on these. "
-        f"2. Missing a 'Must-Have' must be the absolute LAST point used to reject a candidate. If a candidate's Experience, Skills, and JD Alignment are strong, you MUST mark them as 'Hire' regardless of missing Must-Haves. "
-        f"The candidates with the best overall profile based on the above criteria MUST receive a 'Hire' tag. Output ONLY valid JSON, no markdown.\n\n"
+        f"1. You MUST be extremely lenient. If a candidate has the requested 'Must-Haves' (like React and Python), you MUST mark them as 'Hire' even if their Years of Experience is slightly below the requirement (e.g. 2 years instead of 3). "
+        f"2. You MUST evaluate candidates relatively. Mark at least the top 3 or 4 candidates as 'Hire', selecting those whose skills closest match the core Job Requirements. "
+        f"3. Missing a nice-to-have should never result in a No-Hire. "
+        f"Output ONLY valid JSON, no markdown.\n\n"
         f"Job Requirements: {json.dumps(reqs)}\n\n"
         f"Comparison: {comparison_result}"
     )
