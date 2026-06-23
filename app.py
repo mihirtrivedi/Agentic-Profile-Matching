@@ -1,8 +1,20 @@
 import streamlit as st
+
+# MUST BE THE VERY FIRST STREAMLIT COMMAND
+st.set_page_config(page_title="AI Resume Matcher", layout="wide")
+
 from dotenv import load_dotenv
 import os
 import uuid
+import sys
 from langchain_core.messages import HumanMessage, AIMessage
+
+# SQLite fix for Streamlit Cloud (ChromaDB requirement)
+try:
+    __import__('pysqlite3')
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+except ImportError:
+    pass
 
 # Load environment variables
 load_dotenv()
@@ -15,13 +27,11 @@ from datetime import datetime
 
 # Streamlit Cloud Deployment Fix: Auto-initialize DB if it doesn't exist
 if not os.path.exists("chroma_db"):
-    st.info("Initializing vector database for the first time... Please wait a moment.")
-    subprocess.run(["python", "ingest_resumes.py"])
+    with st.spinner("Initializing vector database for the first time... Please wait a moment."):
+        subprocess.run([sys.executable, "ingest_resumes.py"])
 
 # We import the agent AFTER loading dotenv to ensure API keys are available
 from matching_agent import agent
-
-st.set_page_config(page_title="AI Resume Matcher", layout="wide")
 
 # Custom CSS for a professional, high-tech, animated look
 st.markdown("""
