@@ -1,4 +1,5 @@
 import json
+import re
 from typing import List, Dict
 
 from langchain_groq import ChatGroq
@@ -60,6 +61,13 @@ def rag_search(requirements: Dict, k: int = 10) -> List[Dict]:
 # New Analysis Tools (Phase 2 core)
 # ==========================================
 
+def extract_json_block(text: str) -> str:
+    """Extracts the outermost JSON block from LLM output, handling markdown and extra text."""
+    match = re.search(r'\{.*\}', text, re.DOTALL)
+    if match:
+        return match.group(0)
+    return text
+
 def get_llm():
     """Returns the Groq LLM instance."""
     return ChatGroq(model="llama-3.1-8b-instant", temperature=0)
@@ -82,12 +90,11 @@ def extract_requirements(jd: str) -> Dict:
     response = chain.invoke({"jd": jd})
     
     try:
-        content = response.content.strip()
-        if content.startswith("```json"):
-            content = content[7:-3]
+        content = extract_json_block(response.content)
         requirements = json.loads(content)
         return requirements
-    except json.JSONDecodeError:
+    except Exception as e:
+        print(f"Extraction failed: {e}")
         return {"must_haves": [], "nice_to_haves": []}
 
 def compare_candidates(candidate_profiles: List[Dict], requirements: Dict) -> str:

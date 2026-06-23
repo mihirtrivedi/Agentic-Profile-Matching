@@ -1,6 +1,6 @@
 import json
 from langchain_core.messages import AIMessage, SystemMessage
-from tools import extract_requirements, rag_search, compare_candidates, get_llm
+from tools import extract_requirements, rag_search, compare_candidates, get_llm, extract_json_block
 from state import AgentState
 
 def input_receiver_node(state: AgentState):
@@ -41,9 +41,7 @@ def update_requirements_node(state: AgentState):
     
     new_reqs = current_reqs
     try:
-        content = response.content.strip()
-        if content.startswith("```json"):
-            content = content[7:-3]
+        content = extract_json_block(response.content)
         new_reqs = json.loads(content)
     except Exception as e:
         print(f"Failed to update requirements: {e}")
@@ -94,9 +92,7 @@ def multi_round_screening_node(state: AgentState):
     
     hire_tags = {}
     try:
-        content = response.content.strip()
-        if content.startswith("```json"):
-            content = content[7:-3]
+        content = extract_json_block(response.content)
         hire_tags = json.loads(content)
     except Exception:
         pass
