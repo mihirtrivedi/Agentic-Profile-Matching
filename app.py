@@ -10,7 +10,13 @@ load_dotenv()
 import glob
 import json
 import html
+import subprocess
 from datetime import datetime
+
+# Streamlit Cloud Deployment Fix: Auto-initialize DB if it doesn't exist
+if not os.path.exists("chroma_db"):
+    st.info("Initializing vector database for the first time... Please wait a moment.")
+    subprocess.run(["python", "ingest_resumes.py"])
 
 # We import the agent AFTER loading dotenv to ensure API keys are available
 from matching_agent import agent
