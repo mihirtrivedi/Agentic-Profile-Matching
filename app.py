@@ -2,6 +2,7 @@ import streamlit as st
 
 # MUST BE THE VERY FIRST STREAMLIT COMMAND
 st.set_page_config(page_title="AI Resume Matcher", layout="wide")
+st.query_params.clear()
 
 from dotenv import load_dotenv
 import os
