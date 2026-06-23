@@ -173,11 +173,12 @@ def intent_router(state: AgentState) -> str:
     llm = get_llm()
     
     prompt = (
-        f"Analyze the user's message and determine their intent. Options:\n"
-        f"- 'new_jd' (user provided a brand new job description)\n"
-        f"- 'refine_search' (user is tweaking requirements, e.g., 'add react', 'must have 5 years')\n"
-        f"- 'general_query' (user is asking a question about a candidate, the reasoning, or interview prep)\n\n"
-        f"Output ONLY the exact string of the option.\n\nMessage: {latest_msg}"
+        f"Analyze the user's message and determine their intent. You MUST be extremely precise. Choose ONLY ONE of these three options:\n\n"
+        f"1. 'new_jd' : ONLY use this if the user pastes a large block of text that looks like a brand new Job Description or initiates a completely new search from scratch.\n"
+        f"2. 'refine_search' : ONLY use this if the user is explicitly commanding you to CHANGE the parameters of the search and re-evaluate the candidates (e.g. 'search for Node.js instead', 'add React', 'change experience to 5 years').\n"
+        f"3. 'general_query' : Use this for EVERYTHING else! If the user asks 'why' someone was hired, asks you to explain your reasoning, or asks you to 'generate interview questions', it is ALWAYS a general_query. If the word 'interview' or 'explain' is in the prompt, it is 100% 'general_query' even if they mention skills.\n\n"
+        f"Output ONLY the exact string of the option ('new_jd', 'refine_search', or 'general_query'). Do not include markdown or extra text.\n\n"
+        f"Message: {latest_msg}"
     )
     
     response = llm.invoke([SystemMessage(content=prompt)])
