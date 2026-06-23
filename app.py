@@ -33,6 +33,14 @@ if not os.path.exists("chroma_db"):
 # We import the agent AFTER loading dotenv to ensure API keys are available
 from matching_agent import agent
 
+from streamlit_cookies_manager import EncryptedCookieManager
+cookies = EncryptedCookieManager(
+    prefix="apm",
+    password=os.environ.get("COOKIE_PASSWORD", "super_secret_cookie_encryption_key_123")
+)
+if not cookies.ready():
+    st.stop()
+
 # Custom CSS for a professional, high-tech, animated look
 st.markdown("""
 <style>
@@ -82,11 +90,12 @@ st.markdown('<h1 class="main-header">AI Resume Matcher Pro</h1>', unsafe_allow_h
 
 # Initialize chat history and thread id for memory in session state
 if "thread_id" not in st.session_state:
-    if "session_id" in st.query_params:
-        st.session_state.thread_id = st.query_params["session_id"]
+    if "session_id" in cookies:
+        st.session_state.thread_id = cookies["session_id"]
     else:
         st.session_state.thread_id = str(uuid.uuid4())
-        st.query_params["session_id"] = st.session_state.thread_id
+        cookies["session_id"] = st.session_state.thread_id
+        cookies.save()
 
 if "messages" not in st.session_state:
     history_path = f"history/{st.session_state.thread_id}.json"
@@ -142,7 +151,8 @@ with st.sidebar:
                         st.session_state.messages = json.load(json_file)
                         loaded_id = os.path.basename(f).replace(".json", "")
                         st.session_state.thread_id = loaded_id
-                        st.query_params["session_id"] = loaded_id
+                        cookies["session_id"] = loaded_id
+                        cookies.save()
                     st.rerun()
                     
         # Dynamically show Delete/Share buttons ONLY if the active session has content
@@ -154,7 +164,8 @@ with st.sidebar:
                 if os.path.exists(history_path):
                     os.remove(history_path)
                 st.session_state.thread_id = str(uuid.uuid4())
-                st.query_params["session_id"] = st.session_state.thread_id
+                cookies["session_id"] = st.session_state.thread_id
+                cookies.save()
                 st.session_state.messages = [{"role": "assistant", "content": "System Initialized. Awaiting Job Description parameters for screening workflow."}]
                 st.rerun()
                 
@@ -167,7 +178,8 @@ with st.sidebar:
     st.markdown("---")
     if st.button("Initialize New Session", use_container_width=True):
         st.session_state.thread_id = str(uuid.uuid4())
-        st.query_params["session_id"] = st.session_state.thread_id
+        cookies["session_id"] = st.session_state.thread_id
+        cookies.save()
         st.session_state.messages = [{"role": "assistant", "content": "System Initialized. Awaiting Job Description parameters for screening workflow."}]
         st.rerun()
 
