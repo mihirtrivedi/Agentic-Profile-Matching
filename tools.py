@@ -80,8 +80,8 @@ def extract_json_block(text: str) -> str:
     return content
 
 def get_llm():
-    """Returns the Groq LLM instance with a strict 1-retry limit to prevent hanging."""
-    return ChatGroq(model="llama-3.1-8b-instant", temperature=0, max_retries=1)
+    """Returns the Groq LLM instance with 0 retries to prevent silent hanging on Rate Limits."""
+    return ChatGroq(model="llama-3.1-8b-instant", temperature=0, max_retries=0)
 
 def extract_requirements(jd: str) -> Dict:
     """
