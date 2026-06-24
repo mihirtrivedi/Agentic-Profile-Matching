@@ -1,0 +1,7 @@
+[server]
+# Disable file watcher to prevent ModuleNotFound warning loops when scanning transformers library locally
+fileWatcherType = "none"
+
+[browser]
+# Opt out of usage stats for cleaner startup logs
+gatherUsageStats = false
