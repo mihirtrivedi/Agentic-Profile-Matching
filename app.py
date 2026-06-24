@@ -182,7 +182,8 @@ with st.sidebar:
                 
             if col2.button("📤 Share", use_container_width=True):
                 share_url = f"https://agentic-profile-matchinggit.streamlit.app/?share={st.session_state.thread_id}"
-                st.info(f"**Copy this secure link to share your session:**\n\n`{share_url}`\n\n*(The link will automatically hide itself once opened!)*")
+                st.markdown("<span style='color:#94A3B8; font-size: 0.9rem;'>Click the copy icon on the right:</span>", unsafe_allow_html=True)
+                st.code(share_url, language="http")
                 
     with st.expander("System Instructions", expanded=True):
         st.markdown("1. Input Job Description constraints.\n2. Await vector screening analysis.\n3. Input iterative queries to refine search.")
