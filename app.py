@@ -25,6 +25,12 @@ import json
 import html
 import subprocess
 from datetime import datetime
+import random
+import string
+
+def generate_short_id():
+    """Generates a sleek 6-character alphanumeric vanity code for session URLs"""
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
 
 # Streamlit Cloud Deployment Fix: Auto-initialize DB if it doesn't exist
 if not os.path.exists("chroma_db"):
@@ -104,7 +110,7 @@ if "thread_id" not in st.session_state:
         st.session_state.thread_id = cookies["session_id"]
     # 3. Start a brand new session
     else:
-        st.session_state.thread_id = str(uuid.uuid4())
+        st.session_state.thread_id = generate_short_id()
         cookies["session_id"] = st.session_state.thread_id
         cookies.save()
 
@@ -174,7 +180,7 @@ with st.sidebar:
                 history_path = f"history/{st.session_state.thread_id}.json"
                 if os.path.exists(history_path):
                     os.remove(history_path)
-                st.session_state.thread_id = str(uuid.uuid4())
+                st.session_state.thread_id = generate_short_id()
                 cookies["session_id"] = st.session_state.thread_id
                 cookies.save()
                 st.session_state.messages = [{"role": "assistant", "content": "System Initialized. Awaiting Job Description parameters for screening workflow."}]
@@ -190,7 +196,7 @@ with st.sidebar:
         
     st.markdown("---")
     if st.button("Initialize New Session", use_container_width=True):
-        st.session_state.thread_id = str(uuid.uuid4())
+        st.session_state.thread_id = generate_short_id()
         cookies["session_id"] = st.session_state.thread_id
         cookies.save()
         st.session_state.messages = [{"role": "assistant", "content": "System Initialized. Awaiting Job Description parameters for screening workflow."}]
