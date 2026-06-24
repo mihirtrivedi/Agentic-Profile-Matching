@@ -7,11 +7,13 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
 from dotenv import load_dotenv
+import streamlit as st
 
 load_dotenv()
 
 
 
+@st.cache_resource
 def get_vector_store():
     """Initializes and returns the Chroma Vector Store using HuggingFace embeddings."""
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
@@ -78,8 +80,8 @@ def extract_json_block(text: str) -> str:
     return content
 
 def get_llm():
-    """Returns the Groq LLM instance."""
-    return ChatGroq(model="llama-3.1-8b-instant", temperature=0)
+    """Returns the Groq LLM instance with a strict 1-retry limit to prevent hanging."""
+    return ChatGroq(model="llama-3.1-8b-instant", temperature=0, max_retries=1)
 
 def extract_requirements(jd: str) -> Dict:
     """

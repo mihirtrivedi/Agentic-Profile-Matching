@@ -27,6 +27,10 @@ import subprocess
 from datetime import datetime
 import random
 import string
+import threading
+
+# Global lock for safe concurrent history writing
+file_lock = threading.Lock()
 
 def generate_short_id():
     """Generates a sleek 6-character alphanumeric vanity code for session URLs"""
@@ -126,8 +130,9 @@ if "messages" not in st.session_state:
 def save_session():
     if len(st.session_state.messages) > 1:
         os.makedirs("history", exist_ok=True)
-        with open(f"history/{st.session_state.thread_id}.json", "w") as f:
-            json.dump(st.session_state.messages, f)
+        with file_lock:
+            with open(f"history/{st.session_state.thread_id}.json", "w") as f:
+                json.dump(st.session_state.messages, f)
 
 with st.sidebar:
     st.markdown("<h2 style='color: #E2E8F0; font-family: monospace;'>AI Matcher Pro</h2>", unsafe_allow_html=True)
