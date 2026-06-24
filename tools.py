@@ -13,7 +13,7 @@ load_dotenv()
 
 
 
-@st.cache_resource
+@st.cache_resource(show_spinner=False)
 def get_vector_store():
     """Initializes and returns the Chroma Vector Store using HuggingFace embeddings."""
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
