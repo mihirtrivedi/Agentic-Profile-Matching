@@ -17,7 +17,6 @@ Below is the visual representation of our agent's decision-making flow:
 graph TD;
     %% Nodes
     start((START))
-    input_receiver[Input Receiver]
     router{Intent Router}
     
     parse_req[Parse Requirements]
@@ -30,8 +29,7 @@ graph TD;
     end_node((END))
 
     %% Edges
-    start --> input_receiver
-    input_receiver --> router
+    start --> router
     
     router -- "new_jd" --> parse_req
     router -- "refine_search" --> update_req
