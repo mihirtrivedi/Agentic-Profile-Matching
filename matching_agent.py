@@ -2,7 +2,6 @@ from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
 from state import AgentState
 from nodes import (
-    input_receiver_node,
     parse_requirements_node,
     update_requirements_node,
     search_resumes_node,
@@ -20,7 +19,6 @@ def build_graph():
     workflow = StateGraph(AgentState)
     
     # 2. Add all isolated nodes from Phase 3
-    workflow.add_node("input_receiver", input_receiver_node)
     workflow.add_node("parse_requirements", parse_requirements_node)
     workflow.add_node("update_requirements", update_requirements_node)
     workflow.add_node("search_resumes", search_resumes_node)
@@ -28,13 +26,10 @@ def build_graph():
     workflow.add_node("generate_report", generate_report_node)
     workflow.add_node("chat_response", chat_response_node)
     
-    # 3. Define the START edge
-    workflow.add_edge(START, "input_receiver")
-    
-    # 4. Define the Conditional Routing Logic
-    # After receiving input, the intent_router decides where to go
+    # 3. Define the Conditional Routing Logic
+    # After START, the intent_router decides where to go
     workflow.add_conditional_edges(
-        "input_receiver",
+        START,
         intent_router,
         {
             "parse_requirements": "parse_requirements",

@@ -3,11 +3,6 @@ from langchain_core.messages import AIMessage, SystemMessage
 from tools import extract_requirements, rag_search, compare_candidates, get_llm, extract_json_block
 from state import AgentState
 
-def input_receiver_node(state: AgentState):
-    """
-    Captures user input. (State memory is now handled dynamically by the intent router)
-    """
-    return {}
 
 def parse_requirements_node(state: AgentState):
     """
